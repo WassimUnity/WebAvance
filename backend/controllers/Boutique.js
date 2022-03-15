@@ -57,6 +57,7 @@ function updateBoutique(req, res) {
     });
 }
 
+
 function deleteBoutique(req, res) {
 
     let Boutique = require("../models/Boutique");
@@ -88,7 +89,7 @@ function undone(req, res) {
 
     let Boutique = require("../models/Boutique");
 
-    boutique.findByIdAndUpdate({_id: req.params.id}, 
+    Boutique.findByIdAndUpdate({_id: req.params.id}, 
         {done : false}, 
         {new : true})
     .then((updatedBoutique) => {

@@ -8,16 +8,16 @@ function createCategorie(req, res) {
     });
   
     newCategorie.save()
-    .then((savedCategorie) => {
+    .then((newCategorie) => {
         boutique = require('../models/Boutique')
         boutique.findById({_id:req.params.id})
         .then((boutique) => {
-            boutique.categories.push(boutique)
+            boutique.categories.push(newCategorie._id)
             boutique.save()
         })
 
         //send back the created Categorie
-        res.json(savedCategorie);
+        res.json(newCategorie);
             
     }, (err) => {
         res.status(400).json(err)
@@ -35,7 +35,7 @@ function readCategories(req, res) {
     }, (err) => {
         res.status(500).json(err);
     });
- }
+}
 
 function readCategorie(req, res) {
 
@@ -47,7 +47,7 @@ function readCategorie(req, res) {
     }, (err) => {
         res.status(500).json(err);
     });
- }
+}
 
 function updateCategorie(req, res) {
 
@@ -69,13 +69,13 @@ function deleteCategorie(req, res) {
 
     let Categorie = require("../models/Categorie");
 
-    Categorie.findOneAndRemove({_id : req.params.id})
+    deletedCategorie = Categorie.findOneAndRemove({_id : req.params.id})
     .then((deletedCategorie) => {
         res.status(200).json(deletedCategorie);
     }, (err) => {
         res.status(500).json(err);
     });
- }
+}
 
 function done(req, res) {
 

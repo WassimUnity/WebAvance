@@ -1,5 +1,5 @@
 function createProduit(req, res) {
-    let Produit = require('../models/produit');
+    let Produit = require('../models/Produit');
     let newProduit = Produit ({
         id: req.body.id,
         nom: req.body.nom,
@@ -8,26 +8,25 @@ function createProduit(req, res) {
     });
   
     newProduit.save()
-    .then((savedProduit) => {
+    .then((newProduit) => {
         categorie = require('../models/Categorie');
         categorie.findById({_id:req.params.id})
 
         .then((categorie) => {
-            categorie.produits.push(savedProduit);
+            categorie.produits.push(newProduit._id);
             categorie.save()
         })
         //send back the created produit
-        res.json(savedProduit);
+        res.json(newProduit);
             
     }, (err) => {
         res.status(400).json(err)
     });
-
 }
 
 function readProduits(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.find({})
     .then((produits) => {
@@ -39,7 +38,7 @@ function readProduits(req, res) {
 
 function readProduit(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.findById({_id : req.params.id})
     .then((produit) => {
@@ -51,7 +50,7 @@ function readProduit(req, res) {
 
 function updateProduit(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.findByIdAndUpdate({_id: req.params.id}, 
         {nom : req.body.nom, 
@@ -68,10 +67,11 @@ function updateProduit(req, res) {
 
 function deleteProduit(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.findOneAndRemove({_id : req.params.id})
     .then((deletedProduit) => {
+
         res.status(200).json(deletedProduit);
     }, (err) => {
         res.status(500).json(err);
@@ -80,7 +80,7 @@ function deleteProduit(req, res) {
 
 function done(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.findByIdAndUpdate({_id: req.params.id}, 
         {done : true}, 
@@ -95,7 +95,7 @@ function done(req, res) {
 
 function undone(req, res) {
 
-    let Produit = require("../models/produit");
+    let Produit = require("../models/Produit");
 
     Produit.findByIdAndUpdate({_id: req.params.id}, 
         {done : false}, 
