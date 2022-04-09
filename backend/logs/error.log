@@ -57,3 +57,8 @@ Tue, 15 Mar 2022 08:50:40 GMT | ERROR  | HTTP 404: ask for:  http://localhost:30
 Tue, 15 Mar 2022 10:13:16 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/Produit/6230661e5850094dcf798ff1
 Tue, 15 Mar 2022 10:19:16 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/Produit/623067935850094dcf798ff9
 Tue, 15 Mar 2022 10:20:48 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/Produit/623067935850094dcf798ff9
+Mon, 04 Apr 2022 13:52:48 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/
+Mon, 04 Apr 2022 13:52:48 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/favicon.ico
+Mon, 04 Apr 2022 13:53:00 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/
+Sat, 09 Apr 2022 14:57:27 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/Categorie
+Sat, 09 Apr 2022 15:48:02 GMT | ERROR  | HTTP 404: ask for:  http://localhost:3000/api/v1/Categorie

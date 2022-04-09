@@ -1,10 +1,8 @@
 var mongoose = require('mongoose');
-const Produit = require('./Produit');
 
 var Schema = mongoose.Schema;
 
 var Categorie = new Schema({
-  id : String,
   nom : String,
   description : String,
   produits : [{

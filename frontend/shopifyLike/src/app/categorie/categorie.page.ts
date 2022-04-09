@@ -1,28 +1,30 @@
 import { Component } from '@angular/core';
 
+import { CategorieService } from '../services/categorie.service';
 import { BoutiqueService } from '../services/boutique.service';
 import { LoadingController, NavController } from '@ionic/angular';
-import { Router } from '@angular/router'
-import { AlertController, ToastController } from '@ionic/angular';
-
-
+import { ActivatedRoute, Router } from '@angular/router'
+import { AlertController } from '@ionic/angular';
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-categorie',
+  templateUrl: './categorie.page.html',
+  styleUrls: ['./categorie.page.scss'],
 })
-export class HomePage {
+export class CategoriePage {
 
-  boutiques : any;
-  api : BoutiqueService;
+  boutique : any;
+  categories : any;
+  api : CategorieService;
+  boutiqueApi : BoutiqueService
   private showOptions;
 
-  constructor(public restapi: BoutiqueService, 
+  constructor(public restapi: CategorieService, 
+    public boutiqueapi : BoutiqueService,
     public loadingController: LoadingController, 
     public navController : NavController, 
+    private route : ActivatedRoute,
     public router : Router,
-    private alertController: AlertController,
-    private toastController: ToastController
+    private alertController: AlertController
     ) {
       // Ecoute les événéments de clic sur le bouton physique de retour Android
       document.addEventListener('ionBackButton', () => {
@@ -41,20 +43,34 @@ export class HomePage {
       })
 
     this.api = restapi;
+    this.boutiqueApi = boutiqueapi;
   }
 
-  async getboutiques() {
+  async getBoutique(idBoutique) {
     const loading = await this.loadingController.create({
       message: 'Loading'
     });
 
     await loading.present();
-    await this.api.getBoutiques()
+    await this.boutiqueApi.getBoutique(idBoutique)
       .subscribe(res => {
-        console.log(res);
-        this.boutiques = res.filter((aBoutique) => {
-          return this.boutiques;
-        });
+        this.boutique = res;
+        loading.dismiss();
+      }, err => {
+        console.log(err);
+        loading.dismiss();
+      });
+  }
+
+  async getcategories() {
+    const loading = await this.loadingController.create({
+      message: 'Loading'
+    });
+
+    await loading.present();
+    await this.api.getCategories()
+      .subscribe(res => {        
+        this.categories = res.filter(cat => this.boutique.categories.includes(cat._id));
         loading.dismiss();
       }, err => {
         console.log(err);
@@ -63,8 +79,8 @@ export class HomePage {
 
   }
 
-  async deleteBoutique(id:any){
-    await this.api.deleteBoutique(id)
+  async deleteCategorie(id:any){
+    await this.api.deleteCategorie(id)
     .subscribe(res => {
         console.log(res);
         this.ngOnInit();
@@ -73,8 +89,8 @@ export class HomePage {
       });
   }
 
-  async doneBoutique(id:any){
-    await this.api.doneBoutique(id)
+  async doneCategorie(id:any){
+    await this.api.doneCategorie(id)
     .subscribe(res => {
         console.log(res);
         this.ngOnInit();
@@ -85,32 +101,34 @@ export class HomePage {
 
   done(id: any) {
     console.log("done");
-    this.doneBoutique(id);
+    this.doneCategorie(id);
   }
 
   delete(id:any) {
-    this.deleteBoutique(id);
+    this.deleteCategorie(id);
   }
 
   ngOnInit() {
-    this.getboutiques();
+    this.boutique = this.getBoutique(this.route.snapshot.paramMap.get('id'));
+    this.getcategories();
   }
 
   ionViewWillEnter() {
     this.ngOnInit();
   }
 
-  async createBoutique(data)
+  async createCategorie(data)
   {
-    await this.api.createBoutique(data)
+    await this.api.createCategorie(data, this.boutique._id)
     .subscribe(res => {
-        this.getboutiques();
+      this.getBoutique(this.boutique._id)
+        this.getcategories();
       }, (err) => {
         console.log(err);
       });
   }
 
-   async addBoutique() 
+   async addCategorie() 
    {
     const alert = await this.alertController.create({
       cssClass: 'edit-alert',
@@ -122,9 +140,9 @@ export class HomePage {
           placeholder: 'Nom',
         },
         {
-          name: 'departement',
-          type: 'number',
-          placeholder : '01',
+          name: 'description',
+          type: 'text',
+          placeholder : 'Description',
         }
       ],
       buttons: [
@@ -138,7 +156,7 @@ export class HomePage {
         }, {
           text: 'Ok',
           handler: (data) => {
-            this.createBoutique(JSON.stringify(data));
+            this.createCategorie(JSON.stringify(data));
           }
         }
       ]
@@ -147,17 +165,17 @@ export class HomePage {
     await alert.present();
   }
 
-  async saveBoutique(id, data){
-    await this.api.updateBoutique(id, data)
+  async saveCategorie(id, data){
+    await this.api.updateCategorie(id, data)
     .subscribe(res => {
         console.log(res);
-        this.getboutiques();
+        this.getcategories();
       }, (err) => {
         console.log(err);
       });
   }
 
-  async editBoutique(boutique) {
+  async editCategorie(categorie) {
     const alert = await this.alertController.create({
       cssClass: 'edit-alert',
       header: 'Edit',
@@ -165,12 +183,12 @@ export class HomePage {
         {
           name: 'nom',
           type: 'text',
-          placeholder: boutique[0].nom,
+          placeholder: categorie[0].nom,
         },
         {
-          name: 'departement',
-          type: 'number',
-          placeholder: boutique[0].departement,
+          name: 'description',
+          type: 'text',
+          placeholder: categorie[0].description,
         }
       ],
       buttons: [
@@ -184,7 +202,7 @@ export class HomePage {
         }, {
           text: 'Ok',
           handler: (data) => {
-            this.saveBoutique(boutique[0]._id, JSON.stringify(data));
+            this.saveCategorie(categorie[0]._id, JSON.stringify(data));
           }
         }
       ]

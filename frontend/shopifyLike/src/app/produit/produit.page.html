@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>produit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding #slidingItem *ngFor="let produit of produits">
+      <ion-item color="light">
+        
+        <ion-label class="ion-text-wrap">
+          {{ produit.nom }}
+        </ion-label>
+
+
+        <ion-label class="ion-text-wrap">
+          Prix : {{ produit.prix }}€
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-button (click)="editProduit([produit])"   color="secondary">Edit</ion-button>
+        <ion-button (click)="delete([produit._id])" color="danger">Delete</ion-button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addProduit()" >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

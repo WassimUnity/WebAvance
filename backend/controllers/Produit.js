@@ -1,17 +1,14 @@
 function createProduit(req, res) {
     let Produit = require('../models/Produit');
     let newProduit = Produit ({
-        id: req.body.id,
         nom: req.body.nom,
-        prix : req.body.prix,
-        categorie : req.body.Categorie
+        prix : req.body.prix
     });
   
     newProduit.save()
     .then((newProduit) => {
-        categorie = require('../models/Categorie');
+        categorie = require('../models/Categorie')
         categorie.findById({_id:req.params.id})
-
         .then((categorie) => {
             categorie.produits.push(newProduit._id);
             categorie.save()
@@ -54,8 +51,7 @@ function updateProduit(req, res) {
 
     Produit.findByIdAndUpdate({_id: req.params.id}, 
         {nom : req.body.nom, 
-        prix : req.body.prix,
-        categorie : req.body.Categorie
+        prix : req.body.prix
     }, 
         {new : true})
     .then((updatedProduit) => {

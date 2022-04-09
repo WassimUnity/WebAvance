@@ -1,10 +1,8 @@
 function createCategorie(req, res) {
     let Categorie = require('../models/Categorie');
     let newCategorie = Categorie ({
-        id: req.body.id,
         nom: req.body.nom,
-        description : req.body.description,
-        boutique : req.body.Boutique
+        description : req.body.description
     });
   
     newCategorie.save()
@@ -41,7 +39,7 @@ function readCategorie(req, res) {
 
     let Categorie = require("../models/Categorie");
 
-    categorie.findById({_id : req.params.id})
+    Categorie.findById({_id : req.params.id})
     .then((categorie) => {
         res.status(200).json(categorie);
     }, (err) => {
@@ -55,8 +53,8 @@ function updateCategorie(req, res) {
 
     Categorie.findByIdAndUpdate({_id: req.params.id}, 
         {nom : req.body.nom, 
-        description : req.body.description,
-        boutique : req.body.Boutique}, 
+        description : req.body.description
+    }, 
         {new : true})
     .then((updatedCategorie) => {
         res.status(200).json(updatedCategorie);

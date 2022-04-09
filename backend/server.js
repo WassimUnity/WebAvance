@@ -27,6 +27,10 @@ const mongoose = require('mongoose');
 //Create an application 
 const app = express();
 
+//Allow CORS
+const cors = require('cors')
+app.use(cors())
+
 //used to fetch the data from forms on HTTP POST, and PUT
 app.use(bodyParser.urlencoded({
 
@@ -100,3 +104,11 @@ app.listen(3000, () => {
 
 //Print out where the server is
 console.log(chalk.green("Server is running on port: 3000"));
+
+//Default response for any other request
+app.use(function(req, res){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Content-Type", "application/json");
+  res.status(404);
+})

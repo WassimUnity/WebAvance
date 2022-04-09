@@ -1,7 +1,6 @@
 function createBoutique(req, res) {
     let Boutique = require('../models/Boutique');
     let newBoutique = Boutique ({
-        id: req.body.id,
         nom: req.body.nom,
         departement : req.body.departement
     });
@@ -34,6 +33,7 @@ function readBoutique(req, res) {
 
     let Boutique = require("../models/Boutique");
 
+    console.log(req.params.id)
     Boutique.findById({_id : req.params.id})
     .then((boutique) => {
         res.status(200).json(boutique);

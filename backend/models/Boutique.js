@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Boutique = new Schema({
-  id : String,
   nom : String,
   departement : Number,
   categories: [{
